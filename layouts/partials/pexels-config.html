@@ -46,7 +46,6 @@ SECURITY NOTE:
       if (response.ok) {
         const config = await response.json();
         window.PEXELS_API_KEY = config.pexelsApiKey;
-        window.FORMSPREE_ENDPOINT = config.formspreeEndpoint;
         console.log('Configuration loaded securely');
       } else {
         console.warn('Failed to load configuration, using fallback');
