@@ -1,9 +1,12 @@
 // Pexels Background Image System
 // Fetches random landscape images from Pexels API for hero background
+//
+// NOTE: The Pexels API key is set in config.local.toml under [params.pexels.api_key]
+// Hugo exposes this value to the frontend via the pexels-config.html partial as window.PEXELS_API_KEY
 
 class PexelsBackground {
     constructor() {
-        this.apiKey = null;
+        this.apiKey = window.PEXELS_API_KEY || null;
         this.queries = this.getQueries();
         this.currentImage = null;
         this.usedImages = new Set(); // Track used images to avoid repeats
@@ -12,23 +15,8 @@ class PexelsBackground {
         // Hide gradient immediately to prevent flash
         this.hideGradientBackground();
         
-        // Wait for configuration to be loaded, then initialize
-        this.waitForConfig();
-    }
-
-    waitForConfig() {
-        const checkConfig = () => {
-            if (window.PEXELS_API_KEY) {
-                this.apiKey = window.PEXELS_API_KEY;
-                this.init();
-            } else {
-                // Wait a bit more for the configuration to load
-                setTimeout(checkConfig, 100);
-            }
-        };
-        
-        // Start checking after a short delay to allow config to load
-        setTimeout(checkConfig, 100);
+        // Initialize immediately (no need to wait for config)
+        this.init();
     }
 
     hideGradientBackground() {
@@ -49,14 +37,12 @@ class PexelsBackground {
         
         // Fallback queries if not configured
         return [
-            'ocean', 'nature', 'landscape', 'mountains', 'forest', 'sunset', 'beach', 'sky',
-            'lake', 'river', 'valley', 'desert', 'canyon', 'waterfall', 'meadow', 'field',
-            'coast', 'cliff', 'island', 'bay', 'harbor', 'lighthouse', 'bridge', 'path',
-            'trail', 'garden', 'park', 'tree', 'flower', 'cloud', 'storm', 'rainbow',
-            'aurora', 'milky way', 'stars', 'moon', 'sunrise', 'twilight', 'mist', 'fog',
-            'space', 'galaxy', 'nebula', 'planet', 'earth', 'mars', 'jupiter', 'saturn',
-            'universe', 'cosmos', 'astronomy', 'solar system', 'black hole', 'supernova',
-            'constellation', 'meteor', 'comet', 'asteroid', 'space station', 'satellite'
+            'healthcare software',
+            'medical technology',
+            'health tech',
+            'digital health',
+            'telemedicine',
+            'healthcare innovation',
         ];
     }
 
