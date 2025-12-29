@@ -21,8 +21,69 @@
     {{ end }}
     <!-- Pagination logic -->
     {{ $paginator := .Paginate (.Pages.ByWeight) }}
+
+    {{ $first_page := first 1 $paginator.Pages }}
+    {{ $rest_pages := after 1 $paginator.Pages }}
+
+    {{ range $first_page }}
+      <a href="{{ .RelPermalink }}" class="block group mb-8">
+        <article class="bg-gradient-to-br from-bg-secondary to-bg-tertiary dark:from-bg-secondary dark:to-bg-tertiary rounded-xl shadow-md hover:shadow-xl h-full border border-border-primary dark:border-border-primary overflow-hidden project-card card-hover-interactive" data-animate>
+          <div class="grid grid-cols-1 md:grid-cols-2">
+            <div>
+              {{ if .Params.featured_image }}
+              <div class="relative overflow-hidden">
+                <img 
+                  src="{{ .Params.featured_image }}" 
+                  alt="{{ .Title }}" 
+                  class="w-full h-full object-cover bg-bg-secondary dark:bg-bg-secondary transition-transform duration-300 group-hover:scale-105"
+                  loading="lazy"
+                >
+                <!-- Overlay effect on hover -->
+                <div class="absolute inset-0 bg-gradient-to-t from-text-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              {{ else }}
+              <!-- Default placeholder with icon -->
+              <div class="h-64 bg-gradient-primary-lighter flex items-center justify-center">
+                <i class="fas fa-project-diagram text-4xl text-primary"></i>
+              </div>
+              {{ end }}
+            </div>
+            <div class="p-6">
+              <!-- Enhanced title with better typography -->
+              <h2 class="text-xl font-semibold mb-3 text-text-primary dark:text-text-primary group-hover:text-primary dark:group-hover:text-primary-light transition-colors duration-300 flex items-center">
+                <i class="fas fa-arrow-right mr-2 text-primary dark:text-primary-light opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                {{ .Title }}
+              </h2>
+              
+              <!-- Enhanced description -->
+              {{ if .Description }}
+              <p class="text-text-secondary dark:text-text-secondary mb-4 leading-relaxed text-sm">{{ .Description }}</p>
+              {{ end }}
+              
+              <!-- Enhanced tags with better styling -->
+              {{ if .Params.tags }}
+              <div class="flex flex-wrap gap-2">
+                {{ range .Params.tags }}
+                <span class="bg-gradient-to-r from-primary-lighter to-primary-light dark:from-primary-dark dark:to-primary text-text-primary dark:text-text-primary px-3 py-1 rounded-full text-xs font-medium border border-primary-light dark:border-primary transition-all duration-300 hover:scale-105">
+                  {{ . }}
+                </span>
+                {{ end }}
+              </div>
+              {{ end }}
+              
+              <!-- Read more indicator -->
+              <div class="mt-4 flex items-center text-primary dark:text-primary-light text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <span>{{ i18n "learnMore" }}</span>
+                <i class="fas fa-chevron-right ml-2"></i>
+              </div>
+            </div>
+          </div>
+        </article>
+      </a>
+    {{ end }}
+    
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-      {{ range $paginator.Pages }}
+      {{ range $rest_pages }}
       <a href="{{ .RelPermalink }}" class="block group">
         <article class="bg-gradient-to-br from-bg-secondary to-bg-tertiary dark:from-bg-secondary dark:to-bg-tertiary rounded-xl shadow-md hover:shadow-xl h-full border border-border-primary dark:border-border-primary overflow-hidden project-card card-hover-interactive" data-animate>
           {{ if .Params.featured_image }}
